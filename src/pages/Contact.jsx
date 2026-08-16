@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, MessageSquare, Clock } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 
@@ -47,7 +47,7 @@ const Contact = () => {
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '4rem', alignItems: 'stretch' }}>
           
-          {/* Contact Info */}
+          {/* Contact Info Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div className="glass-panel" style={{ padding: '2.5rem', flex: 1 }}>
               <h3 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>İletişim Bilgileri</h3>
@@ -105,7 +105,10 @@ const Contact = () => {
                   </div>
                 )}
               </div>
-                 {/* Contact Form */}
+            </div>
+          </div>
+
+          {/* Contact Form Column */}
           <div className="glass-panel" style={{ padding: '3rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
               <MessageSquare style={{ color: '#60a5fa' }} />
@@ -206,5 +209,3 @@ const inputStyle = {
 };
 
 export default Contact;
-
-
