@@ -1,0 +1,111 @@
+.services {
+  padding: 8rem 0;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 5rem;
+}
+
+.section-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.15rem;
+  color: var(--color-text-muted);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.05);
+}
+
+.service-image-container {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.service-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.service-icon-wrapper {
+  position: absolute;
+  bottom: -20px;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transform: rotate(-10deg);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-icon-wrapper {
+  transform: rotate(0deg) translateY(-5px);
+}
+
+.service-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.service-icon.stream { color: #ec4899; }
+.service-icon.crypto { color: #f59e0b; }
+.service-icon.game { color: #8b5cf6; }
+.service-icon.voice { color: #ef4444; }
+.service-icon.chat { color: #10b981; }
+
+.service-content {
+  padding: 2rem;
+  padding-top: 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.service-description {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
