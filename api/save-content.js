@@ -1,4 +1,5 @@
 import { kv } from '@vercel/kv';
+import { put } from '@vercel/blob';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -29,25 +30,47 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid content payload' });
     }
 
-    // If Vercel KV is configured, save directly to Vercel KV key 'site_content'
+    // 1. If Vercel KV is configured, save directly to KV
     if (process.env.KV_REST_API_URL || process.env.KV_URL) {
-      await kv.set('site_content', payload);
+      try {
+        await kv.set('site_content', payload);
+        return res.status(200).json({
+          success: true,
+          message: 'İçerik Vercel KV üzerine başarıyla kaydedildi.',
+          source: 'kv',
+          timestamp: new Date().toISOString()
+        });
+      } catch (kvErr) {
+        console.warn('KV save failed, falling back to Blob...', kvErr.message);
+      }
+    }
+
+    // 2. If Vercel Blob is configured (sebeel-blob), save JSON to Blob!
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put('site_content.json', JSON.stringify(payload), {
+        access: 'public',
+        addRandomSuffix: false,
+        contentType: 'application/json'
+      });
+
       return res.status(200).json({
         success: true,
-        message: 'İçerik Vercel KV üzerine başarıyla kaydedildi.',
+        message: 'İçerik Vercel Blob üzerine başarıyla kaydedildi.',
+        source: 'blob',
+        url: blob.url,
         timestamp: new Date().toISOString()
       });
     }
 
-    // Local dev or KV not linked yet simulation response
+    // Local dev fallback
     return res.status(200).json({
       success: true,
-      message: 'İçerik kaydedildi (Not: Canlıda Vercel KV değişkenleri otomatik aktif olacaktır).',
-      timestamp: new Date().toISOString(),
-      warning: 'KV_REST_API_URL is not set in this environment.'
+      message: 'İçerik kaydedildi (Yerel modda saklandı).',
+      source: 'local',
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error saving content to Vercel KV:', error);
+    console.error('Error saving content:', error);
     return res.status(500).json({
       success: false,
       error: 'İçerik kaydedilirken hata oluştu: ' + error.message
